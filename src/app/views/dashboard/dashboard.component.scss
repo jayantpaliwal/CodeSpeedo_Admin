@@ -1,0 +1,48 @@
+:host {
+  .legend {
+    small {
+      font-size: x-small;
+    }
+  }
+}
+table {
+  width: 100%;
+}
+
+.full-width {
+  font-size: 14px;
+  width: 100%;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+h1 {
+  text-align: center;
+  color: blueviolet;
+  font-size: 40px;
+  margin: 0;
+}
+
+.nav ul {
+  display: inline-flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+}
+
+.adjust-update-link {
+  margin-left: 10px;
+}
+
+.b1 {
+  float: right;
+  color: blueviolet;
+  height: 45px;
+  width: 250px;
+  font-size: larger;
+  margin-bottom: 10px;
+}

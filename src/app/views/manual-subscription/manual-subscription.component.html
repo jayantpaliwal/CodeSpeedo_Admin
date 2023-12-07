@@ -1,0 +1,101 @@
+<!-- 
+<input type="text" placeholder="Search with email" pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+    [(ngModel)]="userEmail" #email="ngModel" required>
+<button (click)="getUserDetails(userEmail)" [disabled]="!userEmail">Search</button>
+
+<ng-container *ngIf="isUserDetails">
+    userDetails
+</ng-container> -->
+
+<form class="example-form" [formGroup]="userDetailsForm">
+    <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="userDetailsForm.get('email')?.hasError('required') && firstError === 'email'">
+            Email is Required!
+        </mat-error>
+        <mat-error *ngIf="userDetailsForm.get('email')?.hasError('pattern')">
+            Email must be a valid email address!
+        </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="userDetailsForm.invalid"
+        (click)="getUserDetails(userDetailsForm.value)">
+        Search
+    </button>
+</form>
+
+<div *ngIf="isUserDetails">
+    User Details
+    <p>Firstname: Mellie</p>
+    <p>Lastname: Gabbott</p>
+    <p>UId: </p>
+    <p>Account Created on: </p>
+    <form [formGroup]="paymentForm">
+        <!-- <input matInput placeholder="Enter User Id" > -->
+        <!-- <input matInput placeholder="Enter Status - Paid/Unpaid" > -->
+        <mat-form-field >
+            <mat-label>Enter Transaction Id</mat-label>
+            <input matInput formControlName="transactionId">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>Select Plan</mat-label>
+            <mat-select formControlName="selectedPlan" >
+              <!-- @for (food of foods; track food) { -->
+                <mat-option *ngFor="let plan of plans" [value]="plan.value">{{plan.label}}</mat-option>
+                
+              <!-- } -->
+            </mat-select>
+          </mat-form-field>
+        <div class="col-sm-12">
+            <mat-grid-list cols="2" rowHeight="2:1">
+                <mat-grid-tile>
+                    <div style="width:100%;padding:5%;">
+                        <mat-form-field  style="width:100%;">
+                            <mat-label>Start at</mat-label>
+                            <input matInput [matDatepicker]="startDate" (dateChange)="calculateEndDate()" style="width:100%" formControlName="startDate">
+                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                            <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div style="width:100%;padding:5%;">
+                        <mat-form-field  style="width:100%;">
+                            <mat-label>Expire at</mat-label>
+                            <input matInput [matDatepicker]="stopDate" [min]="minDate" style="width:100%" formControlName="endDate">
+                            <mat-datepicker-toggle matSuffix [for]="stopDate"></mat-datepicker-toggle>
+                            <mat-datepicker #stopDate color="primary"></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+
+        <mat-form-field >
+            <mat-label>Enter Payment Mode</mat-label>
+            <input matInput formControlName="paymentMode">
+
+        </mat-form-field>
+
+        
+        <mat-form-field>
+            <mat-label>Select Currency</mat-label>
+            <mat-select formControlName="currency" >
+                <mat-option *ngFor="let currency of currencies" [value]="currency.code">{{currency.text}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field >
+            <mat-label>Enter Amount</mat-label>
+            <input matInput formControlName="amount">
+
+        </mat-form-field>
+          
+
+        <button mat-raised-button color="primary" [disabled]="paymentForm.invalid" (click)="activateAccount(paymentForm.value)">
+            Activate Account
+        </button>
+    </form>
+</div>
