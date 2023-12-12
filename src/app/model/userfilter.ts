@@ -1,4 +1,4 @@
-export interface EmpFilter {
+export interface UserFilter {
     name:string;
     options:string[];
     defaultValue:string;

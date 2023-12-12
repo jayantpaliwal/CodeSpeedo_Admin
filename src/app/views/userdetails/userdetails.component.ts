@@ -16,17 +16,8 @@ export class UserdetailsComponent {
   userDetails:any;
 
   constructor(private route: ActivatedRoute, private router: Router){
-    console.log(this.route);
-    
-    // this.userDetails = this.router.getCurrentNavigation()?.extras.state;
-    // console.log(this.userDetails);
-    // this.router.events
-    //   .pipe(
-    //     filter((event) => event instanceof NavigationEnd)
-    //   )
-    //   .subscribe(() => {
         this.userDetails = this.router.getCurrentNavigation()?.extras.state;
-      // });
+        console.log(this.userDetails);
     }
     
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   AvatarModule,
@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { UserdetailsComponent } from 'src/app/views/userdetails/userdetails.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -54,7 +55,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatSelectModule,
     MatCardModule,
     MatFormFieldModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatPaginatorModule,
+    MatSelectModule,
+    FormsModule 
   ],
  
   declarations: [DashboardComponent],

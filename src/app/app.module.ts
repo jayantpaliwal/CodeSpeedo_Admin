@@ -46,6 +46,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { UserdetailsComponent } from './views/userdetails/userdetails.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -83,7 +84,9 @@ const APP_CONTAINERS = [
     CardModule,
     NgScrollbarModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    NgbModule
   ],
  
   providers: [
