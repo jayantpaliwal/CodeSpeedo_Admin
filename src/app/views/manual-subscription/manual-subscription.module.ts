@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { DragScrollModule } from 'ngx-drag-scroll';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { DragScrollModule } from 'ngx-drag-scroll';
     MatDatepickerModule,
     MatGridListModule,
     MatSelectModule,
-    DragScrollModule
+    DragScrollModule,
+    MatTableModule
   ],
   declarations: [
     ManualSubscriptionComponent ]

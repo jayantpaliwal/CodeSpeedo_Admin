@@ -7,26 +7,45 @@ const api_url = 'https://localhost:44310/AdminAPIs.asmx';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient) { }
-  
-  getAllUsers(formData:any){
+  isAuthenticated = false;
+
+  constructor(private http: HttpClient) {
+    this.isAuthenticated = !localStorage.getItem('userDetails');
+  }
+
+  getAllUsers(formData: any) {
     return this.http.post(`${api_url}/GetAllUsers`, formData);
   }
 
-  getUserData(formData:any){
+  getUserData(formData: any) {
     return this.http.post(`${api_url}/GetUserData`, formData);
   }
 
-  activateAccount(formData:any){
+  activateAccount(formData: any) {
     return this.http.post(`${api_url}/ActivateAccount`, formData);
   }
 
-  getSubscribedUser(formData:any){
+  getSubscribedUser(formData: any) {
     return this.http.post(`${api_url}/GetSubscribedUser`, formData);
   }
 
-  updateSubscription(formData:any){
+  updateSubscription(formData: any) {
     return this.http.post(`${api_url}/UpdateSubscription`, formData);
+  }
+
+  loginUser(formData: any) {
+    return this.http.post(`${api_url}/Login`, formData);
+  }
+
+  isAuthenticatedUser(): boolean {
+    const userDetails = localStorage.getItem('userDetails');
+    return userDetails !== null && userDetails !== undefined;
+    // return this.isAuthenticated;
+  }
+
+  logout(): void {
+    localStorage.removeItem('userDetails');
+    this.isAuthenticated = false;
   }
 
 }

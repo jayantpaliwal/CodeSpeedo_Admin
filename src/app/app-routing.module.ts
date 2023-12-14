@@ -6,12 +6,16 @@ import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+import { AuthGuard } from '../app/guards/auth.guard';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    // canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -23,17 +27,20 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
+          canActivate: [AuthGuard]
       },
       {
         path: 'userdetails',
         loadChildren: () =>
-          import('./views/userdetails/userdetails.module').then((m) => m.UserdetailsModule)
+          import('./views/userdetails/userdetails.module').then((m) => m.UserdetailsModule),
+          canActivate: [AuthGuard]
       },
       {
         path: 'manual-subscription',
         loadChildren: () =>
-          import('./views/manual-subscription/manual-subscription.module').then((m) => m.ManualSubscriptionModule)
+          import('./views/manual-subscription/manual-subscription.module').then((m) => m.ManualSubscriptionModule),
+          canActivate: [AuthGuard]
       },
       {
         path: 'theme',
@@ -90,7 +97,8 @@ const routes: Routes = [
       title: 'Register Page'
     }
   },
-  {path: '**', redirectTo: 'dashboard'}
+  // {path: '**', redirectTo: 'dashboard'}
+  {path: '**', component:DashboardComponent, pathMatch:'full', canActivate: [AuthGuard]}
 ];
 
 @NgModule({

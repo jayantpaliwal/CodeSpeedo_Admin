@@ -1,14 +1,3 @@
-<!-- 
-<input type="text" placeholder="Search with email" pattern="/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-    [(ngModel)]="userEmail" #email="ngModel" required>
-<button (click)="getUserDetails(userEmail)" [disabled]="!userEmail">Search</button>
-
-<ng-container *ngIf="isUserDetails">
-    userDetails
-</ng-container> -->
-
-
-
 <form class="example-form" [formGroup]="userDetailsForm">
     <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
@@ -27,48 +16,72 @@
 </form>
 
 
-
-
-<div *ngIf="isSubscribedUser == true">
-    <div class="container px-0">
-        <h3 class="main-title">Transaction History</h3>
-            <div class="row">
-                <div class="card shadow-sm col-md-3 col-4" *ngFor="let user of subscribedUser; let i = index" >
-                    <!-- <img [src]="p.image" class="card-img-top" alt="..."> -->
-                    <div class="card-body">
-                        <h6 class="card-title">Account Created on: {{user.Created_at | date:'yyyy-MM-dd HH:mm:ss' }}
-                        </h6>
-                        <h6 class="card-title">Subscription Id
-                            : {{user.Subscription_id
-                            }}</h6>
-                        <!-- <h6 class="card-title">Status: {{user.Status}}</h6> -->
-                        <h6 class="card-title">Start at: {{user.Start_at}}</h6>
-                        <h6 class="card-title">Expire at: {{user.Expire_at}}</h6>
-                        <!-- <h6 class="card-title">UId: {{user.UID}}</h6> -->
-                        <p *ngIf="user.Plan_id == 1">Plan: 1 Month</p>
-                        <p *ngIf="user.Plan_id == 2">Plan: 3 Months</p>
-                        <p *ngIf="user.Plan_id == 3">Plan: 6 Months</p>
-                        <p *ngIf="user.Plan_id == 4">Plan: 1 Year</p>
-
-                    </div>
-                </div>
-            </div>
-    </div>
-
-    <!-- <button mat-raised-button color="primary" (click)="renewAccount()" *ngIf="isSubscribedUser == true">
-        Renew Account
-    </button> -->
-</div>
-
 <div *ngIf="isUserDetails == true">
     <h3 class="main-title"> User Details</h3>
     <p>Firstname: {{userDetails.FirstName}}</p>
     <p>Lastname: {{userDetails.LastName}}</p>
     <p>UId: {{userDetails.UID}}</p>
-    <p>Account Created on: {{userDetails.CreatedDate | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+    <p *ngIf="isSubscribedUser == true">Current Plan: {{subscribedUser[0].Plan_id}}</p>
+    <p>Account Created on: {{userDetails.CreatedDate | date:'yyyy-MM-dd' }}</p>
+    </div>
+
+<div *ngIf="isSubscribedUser == true">
+
+    <div class="container px-0">
+        <h3 class="main-title">Transaction History</h3>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef> Id </th>
+        <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }}  </td>
+    </ng-container>
+
+
+
+        <ng-container matColumnDef="Transaction Id">
+            <th mat-header-cell *matHeaderCellDef> Transaction Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.Subscription_id}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="Start at">
+            <th mat-header-cell *matHeaderCellDef> Start at </th>
+            <td mat-cell *matCellDef="let element"> {{element.Start_at | date:'yyyy-MM-dd' }} </td>
+            <!-- HH:mm:ss -->
+        </ng-container>
+        <ng-container matColumnDef="Expire at">
+            <th mat-header-cell *matHeaderCellDef> Expire at </th>
+            <td mat-cell *matCellDef="let element"> {{element.Expire_at | date:'yyyy-MM-dd' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Payment Mode">
+            <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+            <td mat-cell *matCellDef="let element"> {{element.Event_Name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Currency">
+            <th mat-header-cell *matHeaderCellDef> Currency </th>
+            <td mat-cell *matCellDef="let element"> {{element.Currency}} </td>
+          </ng-container>
+
+        <ng-container matColumnDef="Amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.Amount}} </td>
+    </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="userDetails(row)"></tr>
+    </table>
+    </div>
+</div>
+
+<div *ngIf="isUserDetails == true">
+    
+    <div class="container px-0">
+        <h3 class="main-title" *ngIf="isUserDetails && !isSubscribedUser">Activate Subscription</h3>
+        <h3 class="main-title" *ngIf="isUserDetails && isSubscribedUser">Renew Subscription</h3>
+    <!-- HH:mm:ss -->
     <form [formGroup]="paymentForm">
-        <!-- <input matInput placeholder="Enter User Id" > -->
-        <!-- <input matInput placeholder="Enter Status - Paid/Unpaid" > -->
         <mat-form-field>
             <mat-label>Enter Subscription Id</mat-label>
             <input matInput formControlName="subscriptionId">
@@ -77,10 +90,7 @@
         <mat-form-field>
             <mat-label>Select Plan</mat-label>
             <mat-select formControlName="selectedPlan">
-                <!-- @for (food of foods; track food) { -->
                 <mat-option *ngFor="let plan of plans" [value]="plan.value">{{plan.label}}</mat-option>
-
-                <!-- } -->
             </mat-select>
         </mat-form-field>
         <div class="col-sm-12">
@@ -131,11 +141,14 @@
         </mat-form-field>
 
 
-        <button mat-raised-button color="primary" [disabled]="paymentForm.invalid" (click)="activateAccount()" *ngIf="isUserDetails && !isSubscribedUser">
+        <button mat-raised-button color="primary" [disabled]="paymentForm.invalid" (click)="activateAccount()"
+            *ngIf="isUserDetails && !isSubscribedUser">
             Activate Account
         </button>
-        <button mat-raised-button color="primary" [disabled]="paymentForm.invalid"  (click)="renewAccount()" *ngIf="isSubscribedUser && isUserDetails">
+        <button mat-raised-button color="primary" [disabled]="paymentForm.invalid" (click)="renewAccount()"
+            *ngIf="isSubscribedUser && isUserDetails">
             Renew Account
         </button>
     </form>
+    </div>
 </div>

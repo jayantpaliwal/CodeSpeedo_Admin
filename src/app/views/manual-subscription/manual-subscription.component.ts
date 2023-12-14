@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import data from '../../../assets/data/products.json';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-manual-subscription',
@@ -19,7 +20,7 @@ export class ManualSubscriptionComponent implements OnInit {
   isUserDetails: boolean = false;
   isSubscribedUser: boolean = false;
   userDetails: any;
-  subscribedUser: any;
+  subscribedUser: any = [];
   minDateToFinish = new Subject<string>();
   minDate: any;
   plans: any = [
@@ -33,6 +34,10 @@ export class ManualSubscriptionComponent implements OnInit {
     { code: 'INR', text: 'India Rupees – INR' },
     { code: 'USD', text: 'United States Dollars – USD' },
   ]
+
+  displayedColumns: string[] = [ 'Id', 'Transaction Id', 'Start at', 'Expire at', 'Payment Mode', 'Currency', 'Amount'];
+  dataSource = new MatTableDataSource(this.subscribedUser);
+  
 
   constructor(private formBuilder: FormBuilder, private api: ApiService) {
 
@@ -78,6 +83,7 @@ export class ManualSubscriptionComponent implements OnInit {
               this.isUserDetails = true;
             } else if (res && res.Table && res.Table.length > 0) {
               this.subscribedUser = res.Table;
+              this.dataSource.data = this.subscribedUser;
               console.log(this.subscribedUser);
               this.isUserDetails = true;
               this.isSubscribedUser = true;
@@ -188,7 +194,7 @@ export class ManualSubscriptionComponent implements OnInit {
       Expire_at: endDateISO,
       Currency: this.paymentForm.controls['currency'].value,
       Amount: this.paymentForm.controls['amount'].value,
-      Status: 'ACCOUNT ACTIVATED',
+      Status: 'ACTIVATED',
       Event_name: this.paymentForm.controls['paymentMode'].value,
       Plan_id: this.paymentForm.controls['selectedPlan'].value
     };
@@ -202,7 +208,7 @@ export class ManualSubscriptionComponent implements OnInit {
     formData.append('Expiry', endDateISO);
     formData.append('Currency', this.paymentForm.controls['currency'].value);
     formData.append('Amount', this.paymentForm.controls['amount'].value);
-    formData.append('Status', 'ACCOUNT ACTIVATED');
+    formData.append('Status', 'ACTIVATED');
     formData.append('Event_name', this.paymentForm.controls['paymentMode'].value);
     formData.append('Plan_id', this.paymentForm.controls['selectedPlan'].value);
 

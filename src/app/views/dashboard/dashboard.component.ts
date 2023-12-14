@@ -52,26 +52,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
-
-    // this.userFilters.push({ name: 'status', options: this.status, defaultValue: this.defaultValue });
-
-    // this.dataSourceFilters.filterPredicate = (record:any, filter) => {
-    //   const filterMap = new Map(JSON.parse(filter));
-    //   let isMatch = true;
-
-    //   filterMap.forEach((value, key) => {
-    //     if (key === 'status') {
-    //       isMatch = isMatch && record.IsPaid === value;
-    //     } else {
-    //       isMatch = isMatch && record[key as keyof User] === value;
-    //     }
-    //   });
-
-    //   return isMatch;
-    // };
-
-
     this.userData(this.page, this.tableSize);
   }
 
@@ -80,32 +60,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  // applyFilter() {
-  //   // You can modify this function to include the status filter logic
-  //   this.userData(this.page, this.tableSize);
-  // }
-
-
   userDetails(userDetails: any) {
 
     this.router.navigate(['/userdetails'], { state: userDetails });
 
   }
-
-  // userData(pageNo: any, pageSize: any) {
-  //   var formData: any = new FormData();
-  //   formData.append('pageNo', pageNo);
-  //   formData.append('pageSize', pageSize);
-
-  //   this.api.getAllUsers(formData).subscribe((res: any) => {
-  //     this.UserData = res.Users;
-  //     console.log(res);
-
-  //     this.dataSource.data = this.UserData;
-  //     this.tableSize = res.TotalCounts[0].TotalPages;
-
-  //   })
-  // }
 
   userData(pageNo: any, pageSize: any) {
     const formData: FormData = new FormData();
@@ -113,11 +72,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     formData.append('pageSize', pageSize);
   
     this.api.getAllUsers(formData).subscribe((res: any) => {
+      console.log(res);
+      
       this.UserData = res.Users;
       this.dataSource.data = this.UserData;
       this.tableSize = res.TotalCounts[0].TotalPages;
-  
-      // Apply the current filter after updating data
       this.applyFilter();
     });
   }
